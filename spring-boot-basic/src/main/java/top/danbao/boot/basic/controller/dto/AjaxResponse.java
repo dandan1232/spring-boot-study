@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 /**
  * @author 蛋宝
  * @date 2021/3/4 15:03
- * @description AjaxResponse
+ * @description AjaxResponse统一响应结果封装
  **/
 @Data
 @AllArgsConstructor
