@@ -8,13 +8,15 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import top.danbao.boot.basic.controller.dto.AjaxResponse;
-import top.danbao.boot.basic.controller.dto.Param;
-import top.danbao.boot.basic.entity.Article;
 import top.danbao.boot.basic.entity.Book;
 import top.danbao.boot.basic.entity.BookReader;
 
-import java.io.Reader;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -30,10 +32,10 @@ import java.util.*;
 
 public class BookController {
 
-//    创建线程安全的Map，模拟books信息的存储
-    static Map<Integer, Book> books= Collections.synchronizedMap(new HashMap<>());
+    //    创建线程安全的Map，模拟books信息的存储
+    static Map<Integer, Book> books = Collections.synchronizedMap(new HashMap<>());
 
-    @ApiOperation(value = "查询所有图书",notes = "查询所有图书")
+    @ApiOperation(value = "查询所有图书", notes = "查询所有图书")
     @GetMapping("all")
     public AjaxResponse selectBooks() {
 //        BookReader[] readers = {
@@ -66,7 +68,7 @@ public class BookController {
 //                .build();
 //        Book[] books = {book1, book2};
 //        List<Book> booklist = Arrays.asList(books);
-        List<Book> booklist=new ArrayList<>(books.values());
+        List<Book> booklist = new ArrayList<>(books.values());
 
         return AjaxResponse.success(booklist);
     }
@@ -108,7 +110,7 @@ public class BookController {
     }
 
     /**
-     * 增加⼀篇Article ，@RequestParam接收参数
+     * 增加⼀本Book ，@RequestParam接收参数
      *
      * @param id         id
      * @param author     作者
@@ -117,9 +119,9 @@ public class BookController {
      * @param createTime 创建时间
      * @return AjaxResponse
      */
-    @ApiOperation("URL传参新增⽂章")
+    @ApiOperation("URL传参新增图书")
     @PostMapping("param")
-    public AjaxResponse saveArticle(
+    public AjaxResponse saveBook(
             @ApiParam("⽂章id")
             @RequestParam(value = "id", defaultValue =
                     "111", required = false) int id,
@@ -142,7 +144,7 @@ public class BookController {
                 .author(author)
                 .createTime(createTime)
                 .build();
-        log.info("saveArticle:" + book);
+        log.info("saveBook:" + book);
         return AjaxResponse.success(book);
     }
 
@@ -153,7 +155,7 @@ public class BookController {
      * @param formData 表单对象序列化的字符串
      * @return AjaxResponse
      */
-    @ApiOperation("表单请求体新增文章")
+    @ApiOperation("表单请求体新增图书")
     @PostMapping("form")
     public AjaxResponse saveBookByFormData(@ApiParam("表单字符串") @RequestParam("formData") String formData) {
 //    表单传递的数据为字符串、
@@ -174,13 +176,14 @@ public class BookController {
 
 
     @PostMapping()
+    @ApiOperation(value = "修改图书", notes = "修改图书")
     public AjaxResponse saveBook(@RequestBody Book book) {
         log.info("saveBook:" + book);
         return AjaxResponse.success(book);
     }
 
     @PutMapping()    //修改
-    public AjaxResponse updateBook(@ApiParam("修改文章") @RequestParam int id, @RequestParam String title) {
+    public AjaxResponse updateBook(@ApiParam("修改图书") @RequestParam int id, @RequestParam String title) {
         Book book = Book.builder()
                 .id(id)
                 .author("ldd")
@@ -201,7 +204,7 @@ public class BookController {
 
     //    删除,表单请求
     @DeleteMapping()
-    @ApiOperation(value = "删除文章",notes = "根据路径参数id来指定删除文章")
+    @ApiOperation(value = "删除图书", notes = "根据路径参数id来指定删除图书")
 //    public  AjaxResponse deleteBook(@RequestParam int id,@RequestParam String title){
     public AjaxResponse deleteBook(@RequestParam(value = "id", defaultValue = "888", required = false) int idd,
                                    @RequestParam("title") String tit) {
@@ -219,5 +222,78 @@ public class BookController {
 //        return AjaxResponse.success(param);
 //    }
 
+    @PostMapping("upload")
+    public AjaxResponse handleUpload(MultipartFile file, HttpServletRequest request) {
+        //创建文件在服务器的存放路径
+        String path = request.getServletContext().getRealPath("/upload");
+        log.info(path);
+        File fileDir = new File(path);
+        if (!fileDir.exists()) {
+            boolean flag = fileDir.mkdirs();
+            //log.info(String.valueOf(flag));
+            //返回字符串
+            log.info("flag:" + flag);
+        }
+        //生成文件在服务器的名称的前缀，重命名
+        String prefixName = UUID.randomUUID().toString();
+        //取得源文件的名字
+        String originalFilename = file.getOriginalFilename();
+        //从源文件名中分离出扩展名（后缀） 111.jpg-->.jpg
+        assert originalFilename != null;
+        String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
+        //拼接新的文件名
+        String fileName = prefixName + suffixName;
+        log.info(fileName);
+        //创建上传的文件对象
+        File saveFile = new File(path + "/" + fileName);
+        //上传
+        try {
+            file.transferTo(saveFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.info(e.getMessage());
+            AjaxResponse.failure("文件上传失败");
+        }
+        return AjaxResponse.success(fileName);
+    }
 
+    @PostMapping("/upload2")
+    @ApiOperation(value = "多文件上传", notes = "多文件上传")
+    public AjaxResponse multiFileUpload(MultipartFile[] multipartFiles, HttpServletRequest request) {
+        //用来存储访问路径
+//        List list = new ArrayList();
+        if (multipartFiles.length > 0) {
+            for (MultipartFile multipartFile:multipartFiles){
+                String realPath = request.getServletContext().getRealPath("/upload");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM/dd");
+                String dateFormat = sdf.format(new Date());
+                File saveFile = new File(realPath+"/" + dateFormat);
+                //判断路径是否存在，不存在则创建一个
+                if (!saveFile.isDirectory()){
+                    saveFile.mkdirs();
+                    log.info("文件路径:"+saveFile);
+                }
+                //取得源文件名
+                String originalFilename = multipartFile.getOriginalFilename();
+                //UUID 创建一个不与其他文件重名的文件名
+                String prefixName = UUID.randomUUID().toString();
+                //获得文件后缀
+                assert originalFilename != null;
+                String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
+                //拼接新文件名
+                String newName = prefixName+suffixName;
+                log.info("文件新名字:"+newName);
+
+                try {
+                    //saveFile 父文件目录   newName 子File实例
+                    multipartFile.transferTo(new File(saveFile,newName));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        return AjaxResponse.success();
+    }
 }

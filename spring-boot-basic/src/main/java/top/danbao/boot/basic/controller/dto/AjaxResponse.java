@@ -78,4 +78,11 @@ public class AjaxResponse {
         ajaxResponse.setData(obj);
         return ajaxResponse;
     }
+
+    public static AjaxResponse failure(String meaasge) {
+        AjaxResponse ajaxResponse = new AjaxResponse();
+        ajaxResponse.setCode(5001);
+        ajaxResponse.setMeaasge(meaasge);
+        return ajaxResponse;
+    }
 }
