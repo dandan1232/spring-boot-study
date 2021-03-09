@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -257,43 +259,47 @@ public class BookController {
         return AjaxResponse.success(fileName);
     }
 
-    @PostMapping("/upload2")
-    @ApiOperation(value = "多文件上传", notes = "多文件上传")
-    public AjaxResponse multiFileUpload(MultipartFile[] multipartFiles, HttpServletRequest request) {
-        //用来存储访问路径
-//        List list = new ArrayList();
-        if (multipartFiles.length > 0) {
-            for (MultipartFile multipartFile:multipartFiles){
-                String realPath = request.getServletContext().getRealPath("/upload");
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM/dd");
-                String dateFormat = sdf.format(new Date());
-                File saveFile = new File(realPath+"/" + dateFormat);
-                //判断路径是否存在，不存在则创建一个
-                if (!saveFile.isDirectory()){
-                    saveFile.mkdirs();
-                    log.info("文件路径:"+saveFile);
-                }
-                //取得源文件名
-                String originalFilename = multipartFile.getOriginalFilename();
-                //UUID 创建一个不与其他文件重名的文件名
-                String prefixName = UUID.randomUUID().toString();
-                //获得文件后缀
-                assert originalFilename != null;
-                String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
-                //拼接新文件名
-                String newName = prefixName+suffixName;
-                log.info("文件新名字:"+newName);
-
-                try {
-                    //saveFile 父文件目录   newName 子File实例
-                    multipartFile.transferTo(new File(saveFile,newName));
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+    @PostMapping(value = "/upload2")
+    public AjaxResponse sourceUpload(MultipartFile[] multipartFiles, HttpServletRequest request) {
+        List fileNames = new ArrayList();
+        YearMonth yearMonth = YearMonth.now();
+        Calendar now = Calendar.getInstance();
+        for(MultipartFile file :multipartFiles) {
+            if(file.isEmpty()) {
+                System.out.println("文件为空");
             }
+            //文件重命名
+            String prefixName = UUID.randomUUID().toString();
+            //获取文件后缀名
+            String originalFilename = file.getOriginalFilename();
+            //获得文件后缀
+            assert originalFilename != null;
+            String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
+            //拼接新的文件名
+            String newFileName = prefixName + suffixName;
+            log.info(newFileName);
+            //上传文件
+            String ym = yearMonth.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+            int day = now.get(Calendar.DAY_OF_MONTH);
+            String path = request.getServletContext().getRealPath("img/"+ym+"/"+ day + "/" + suffixName);
+            log.info(path);
+            File fileDir = new File(path);
+            if (!fileDir.exists()){
+                boolean flag = fileDir.mkdirs();
+                log.info("flag:"+flag);
+            }
+            //创建上传文件对象
+            File saveFile = new File(path + "/" + newFileName);
+            try {
+                file.transferTo(saveFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+                log.info(e.getMessage());
+                AjaxResponse.failure("文件上传失败");
+            }
+            fileNames.add(newFileName);
+            log.info(fileNames.toString());
         }
-        return AjaxResponse.success();
+        return AjaxResponse.success("上传成功");
     }
 }
