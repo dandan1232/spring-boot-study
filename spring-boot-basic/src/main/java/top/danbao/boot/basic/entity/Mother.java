@@ -16,8 +16,11 @@ import java.util.List;
  * @description:
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Component
-@ConfigurationProperties(prefix = "family.mother")
+//@ConfigurationProperties(prefix = "family.mother")
 public class Mother {
     private String name;
     private List<String> alias;

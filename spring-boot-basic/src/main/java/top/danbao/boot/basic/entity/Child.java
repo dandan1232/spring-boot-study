@@ -17,8 +17,11 @@ import java.util.Map;
  * @description:
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Component
-@ConfigurationProperties(prefix = "family.child")
+//@ConfigurationProperties(prefix = "family.child")
 public class Child {
     private String name;
     private Integer age;

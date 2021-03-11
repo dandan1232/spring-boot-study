@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author: 蛋宝
+ * @author:
  * @date: 2021/3/9 11:39
  * @description:
  */
@@ -31,4 +31,12 @@ class FamilyTest {
     void testFamily() {
         log.info("family:"+ family);
     }
+
+//    @Test
+//    void getFamilyName(){
+//        String familyName= family.getFamilyName();
+//        log.info(familyName);
+//        assertEquals("happy family",familyName);
+//    }
+
 }

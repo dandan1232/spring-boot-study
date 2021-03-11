@@ -6,7 +6,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import top.danbao.boot.basic.controller.dto.AjaxResponse;
@@ -31,6 +33,7 @@ import java.util.*;
 @RequestMapping(value = "api/v1/books")
 @Slf4j
 @Api(tags = "图书管理接口")
+@Validated
 
 public class BookController {
 
@@ -131,6 +134,7 @@ public class BookController {
             @RequestParam(value = "author", defaultValue =
                     "ldd", required = false) String author,
             @ApiParam("标题")
+            @Length(min=5,max = 20,message = "图书标题长度必读5-20位之间")
             @RequestParam String title,
             @ApiParam("内容")
             @RequestParam String content,

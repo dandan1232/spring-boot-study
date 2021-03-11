@@ -1,28 +1,7 @@
-server:
-  port: 8080
-
-  #\u4E0A\u4F20\u6587\u4EF6\u5927\u5C0F\u914D\u7F6E\uFF0C\u8BBE\u7F6E\u4E3A-1\u65E0\u9650\u5236\uFF0C\u4F46\u662F\u4E0D\u5EFA\u8BAE
 spring:
   servlet:
     multipart:
       max-file-size: 300MB
       max-request-size: 300MB
-
-family:
-  family-name: happy family
-  father:
-    name: tom
-    age: ${random.int(25,40)}
-  mother:
-    name: hello
-    alias: [ lovely,alice ]
-  child:
-    name: jack
-    age: ${random.int(5,16)}
-    friends:
-      - hobby: football
-        gander: male
-        age: 22
-      - hobby: sing
-        gender: female
-        age: 21
+#  profiles:
+#    active: test

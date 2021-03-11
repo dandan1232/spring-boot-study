@@ -1,0 +1,18 @@
+family:
+  family-name: happy family
+  father:
+    name: tom
+    age: 30
+  mother:
+    name: rose
+    alias: [ lovely,alice ]
+  child:
+    name: jack
+    age: 6
+    friends:
+      - hobby: football
+        gander: male
+        age: 22
+      - hobby: sing
+        gender: female
+        age: 21
