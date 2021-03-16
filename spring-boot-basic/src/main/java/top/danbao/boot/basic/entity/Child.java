@@ -25,5 +25,6 @@ import java.util.Map;
 public class Child {
     private String name;
     private Integer age;
-    private List<Map<String, Object>> friends;
+//    private List<Map<String, Object>> friends;
+    private List<Friend> friends;
 }

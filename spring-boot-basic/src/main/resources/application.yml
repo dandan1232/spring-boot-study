@@ -3,5 +3,5 @@ spring:
     multipart:
       max-file-size: 300MB
       max-request-size: 300MB
-#  profiles:
-#    active: test
+  profiles:
+    active: dev

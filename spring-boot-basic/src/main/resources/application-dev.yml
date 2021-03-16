@@ -1,2 +1,13 @@
 server:
   port: 8080
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 300MB
+      max-request-size: 300MB
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/db_soft1921?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: ldd123789dd
+    driver-class-name: com.mysql.cj.jdbc.Driver

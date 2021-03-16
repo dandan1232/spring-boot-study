@@ -11,8 +11,6 @@ family:
     age: 6
     friends:
       - hobby: football
-        gander: male
-        age: 22
+        gender: male
       - hobby: sing
         gender: female
-        age: 21

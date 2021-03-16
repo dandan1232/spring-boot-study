@@ -219,7 +219,6 @@ public class BookController {
         return AjaxResponse.success();
     }
 
-
 //    @DeleteMapping() //与以下同理
 //    @RequestMapping(value = "del",method = RequestMethod.DELETE)
 //    public AjaxResponse deletBook(@RequestBody Param param){

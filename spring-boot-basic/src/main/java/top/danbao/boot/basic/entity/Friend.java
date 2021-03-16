@@ -19,4 +19,5 @@ import org.springframework.stereotype.Component;
 public class Friend {
     private String hobby;
     private String gender;
+//    private String age;
 }

@@ -25,8 +25,8 @@ import javax.annotation.Resource;
 @NoArgsConstructor
 @Component
 @Validated
-//@PropertySource(value = {"classpath:family.properties"})
-@PropertySource(value = {"classpath:family.yml"},factory = MixPropertySourceFactory.class)
+@PropertySource(value = {"classpath:family.properties"})
+//@PropertySource(value = {"classpath:family.yml"},factory = MixPropertySourceFactory.class)
 @ConfigurationProperties(prefix = "family")
 public class Family {
 //    @Value("${family.family-name}")
