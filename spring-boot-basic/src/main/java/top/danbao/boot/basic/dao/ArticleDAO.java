@@ -45,7 +45,7 @@ public class ArticleDAO {
      * @return int
      */
     public int deletById(Integer id) {
-        return jdbcTemplate.update("DELETE FROM t_article WHERE id =?", id);
+        return jdbcTemplate.update("DELETE FROM t_article WHERE id = ? ", id);
     }
 
 
@@ -56,7 +56,7 @@ public class ArticleDAO {
      * @return int
      */
     public int update(Article article) {
-        return jdbcTemplate.update("UPDATE t_article SET author=?,title=?,content=?,update_time=? WHERE id=?",
+        return jdbcTemplate.update("UPDATE t_article SET author=?,title=?,content=?,update_time=? WHERE id= ? ",
                 article.getAuthor(),
                 article.getTitle(),
                 article.getContent(),
@@ -72,7 +72,7 @@ public class ArticleDAO {
      * @return Article
      */
     public Article findById(Integer id) {
-        List<Article> articles = jdbcTemplate.query("SELECT * FROM t_article WHERE id =?",
+        List<Article> articles = jdbcTemplate.query("SELECT * FROM t_article WHERE id = ? ",
                 new Object[]{id}, new BeanPropertyRowMapper<>(Article.class));
         return articles.get(0);
     }
@@ -85,6 +85,7 @@ public class ArticleDAO {
      */
     public List<Article> findAll() {
         return jdbcTemplate.query("SELECT * FROM t_article ",
+
                 new BeanPropertyRowMapper<>(Article.class));
     }
 }

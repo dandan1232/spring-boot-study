@@ -37,4 +37,5 @@ public class Book {
 
     @ApiModelProperty("读者列表")
     private List<BookReader> readers;
+
 }

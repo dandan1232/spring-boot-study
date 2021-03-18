@@ -6,8 +6,28 @@ spring:
     multipart:
       max-file-size: 300MB
       max-request-size: 300MB
+
+  thymeleaf:
+    prefix: classpath:/templates/ #获取页面路径
+    mode: HTML
+    encoding: UTF-8
+    content-type: text/html
+    cache: false
+
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/db_soft1921?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/db_soft1921?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: ldd123789dd
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+    show-sql: true
+
+  h2:
+    console:
+      path: /h2-console
+      enabled: true

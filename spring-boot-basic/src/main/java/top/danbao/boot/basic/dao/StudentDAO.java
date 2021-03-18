@@ -20,13 +20,13 @@ public class StudentDAO {
     private JdbcTemplate jdbcTemplate;
 
     public List<Student> listStudents() {
-        String sql = "SELECT * FROM t_student WHERE deleted=0";
+        String sql = "SELECT * FROM t_student WHERE deleted = 0 ";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Student.class));
 
     }
 
     public List<Student> getStudentById(Integer id) {
-        String sql = "SELECT * FROM t_student WHERE id=? and deleted = 0";
+        String sql = "SELECT * FROM t_student WHERE id=? and deleted = 0 ";
         return jdbcTemplate.query(sql, new Object[]{id}, new BeanPropertyRowMapper<>(Student.class));
     }
 
@@ -44,13 +44,13 @@ public class StudentDAO {
     }
 
     public int updateStudent(Student student) {
-        String sql = "UPDATE t_student SET name = ?,qq=?,hobby=? WHERE id=?";
+        String sql = "UPDATE t_student SET name = ?,qq = ?,hobby = ? WHERE id = ? ";
         Object[] args = {student.getName(), student.getQq(), student.getHobby(), student.getId()};
         return jdbcTemplate.update(sql, args);
     }
 
     public int deleteStudent(Integer id) {
-        String sql = " UPDATE t_student SET deleted = 1 WHERE id=?";
+        String sql = " UPDATE t_student SET deleted = 1 WHERE id= ? ";
         return jdbcTemplate.update(sql, id);
     }
 }
