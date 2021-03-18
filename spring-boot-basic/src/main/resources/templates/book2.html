@@ -13,7 +13,6 @@
     <div class="card" th:each="book2:${book2List}">
         <img src="https://via.placeholder.com/150" alt="封面"
              th:src="${book2.cover}" class="card-img"/>
-
         <div class="card-body">
             <p th:text="${book2.name}">图书名称</p>
         </div>
