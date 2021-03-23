@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel("班级卡片")
-public class Student {
+public class Listsoft1921 {
     @ApiModelProperty("编号")
     private Integer id;
     @ApiModelProperty("姓名")

@@ -7,9 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.danbao.boot.basic.controller.dto.AjaxResponse;
-import top.danbao.boot.basic.entity.Article;
-import top.danbao.boot.basic.entity.Student;
-import top.danbao.boot.basic.service.StudentService;
+import top.danbao.boot.basic.entity.Listsoft1921;
+import top.danbao.boot.basic.service.Listsoft1921Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,7 +25,7 @@ import java.util.List;
 @Validated
 public class StudentController {
     @Resource
-    private StudentService studentService;
+    private Listsoft1921Service studentService;
 
     /**
      * 查询所有文章
@@ -34,7 +33,7 @@ public class StudentController {
     @ApiOperation(value = "查询所有学生", notes = "查询所有学生")
     @GetMapping("all")
     public AjaxResponse selectStudents() {
-        List<Student> StudentList = studentService.getStudentList();
+        List<Listsoft1921> StudentList = studentService.getStudentList();
         return AjaxResponse.success(StudentList);
     }
 
@@ -48,7 +47,7 @@ public class StudentController {
 
     @PutMapping()
     @ApiOperation("修改学生信息")
-    public AjaxResponse updateStudent(@RequestBody Student student){
+    public AjaxResponse updateStudent(@RequestBody Listsoft1921 student){
         return AjaxResponse.success(studentService.updateStudent(student),"ok");
     }
 

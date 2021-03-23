@@ -3,7 +3,7 @@ package top.danbao.boot.basic.dao;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import top.danbao.boot.basic.entity.Student;
+import top.danbao.boot.basic.entity.Listsoft1921;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -14,24 +14,24 @@ import java.util.List;
  * @description:
  */
 @Repository
-public class StudentDAO {
+public class Listsoft1921DAO {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
 
-    public List<Student> listStudents() {
-        String sql = "SELECT * FROM t_student WHERE deleted = 0 ";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Student.class));
+    public List<Listsoft1921> listStudents() {
+        String sql = "SELECT * FROM `t_list-soft1921` WHERE deleted = 0 ";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Listsoft1921.class));
 
     }
 
-    public List<Student> getStudentById(Integer id) {
-        String sql = "SELECT * FROM t_student WHERE id=? and deleted = 0 ";
-        return jdbcTemplate.query(sql, new Object[]{id}, new BeanPropertyRowMapper<>(Student.class));
+    public List<Listsoft1921> getStudentById(Integer id) {
+        String sql = "SELECT * FROM `t_list-soft1921` WHERE id=? and deleted = 0 ";
+        return jdbcTemplate.query(sql, new Object[]{id}, new BeanPropertyRowMapper<>(Listsoft1921.class));
     }
 
-    public Student save(Student student) {
-        String sql = "INSERT INTO t_student(id,name,nickname,hometown,constellation,mobile,qq,hobby) VALUES(?,?,?,?,?,?,?,?) ";
+    public Listsoft1921 save(Listsoft1921 student) {
+        String sql = "INSERT INTO `t_list-soft1921`(id,name,nickname,hometown,constellation,mobile,qq,hobby) VALUES(?,?,?,?,?,?,?,?) ";
         Object[] args = {student.getId(), student.getName(), student.getNickname(),
                 student.getHometown(), student.getBirthday(), student.getConstellation(), student.getMobile()
                 , student.getQq(), student.getHobby()};
@@ -43,14 +43,14 @@ public class StudentDAO {
         }
     }
 
-    public int updateStudent(Student student) {
-        String sql = "UPDATE t_student SET name = ?,qq = ?,hobby = ? WHERE id = ? ";
+    public int updateStudent(Listsoft1921 student) {
+        String sql = "UPDATE `t_list-soft1921` SET name = ?,qq = ?,hobby = ? WHERE id = ? ";
         Object[] args = {student.getName(), student.getQq(), student.getHobby(), student.getId()};
         return jdbcTemplate.update(sql, args);
     }
 
     public int deleteStudent(Integer id) {
-        String sql = " UPDATE t_student SET deleted = 1 WHERE id= ? ";
+        String sql = " UPDATE `t_list-soft1921` SET deleted = 1 WHERE id= ? ";
         return jdbcTemplate.update(sql, id);
     }
 }
