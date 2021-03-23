@@ -26,16 +26,16 @@ class Book2ServiceTest {
     @Resource
     private Book2Service book2Service;
 
-    @Test
-    void save(){
-        Book2 book2=Book2.builder()
-                .name("111")
-                .cover("111")
-                .build();
-        Book2 saveBook2 = book2Service.save(book2);
-        log.info("id:"+saveBook2.getId());
-        assertEquals("111",saveBook2.getName());
-    }
+//    @Test
+//    void save(){
+//        Book2 book2=Book2.builder()
+//                .name("111")
+//                .cover("111")
+//                .build();
+//        Book2 saveBook2 = book2Service.save(book2);
+//        log.info("id:"+saveBook2.getId());
+//        assertEquals("111",saveBook2.getName());
+//    }
 
     @Test
     void getAll() {
